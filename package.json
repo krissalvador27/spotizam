@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/spotify-web-api-js": "^0.21.0",
+    "lodash": "^4.17.11",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts-ts": "2.17.0"
+    "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "2.17.0",
+    "recorderjs": "^1.0.1",
+    "spotify-web-api-js": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",

@@ -1,19 +1,24 @@
-import * as React from 'react';
-import './App.css';
+import * as React from "react";
+import { Switch, Route, Redirect } from 'react-router-dom';
+import "./App.css";
+import "./sp-bootstrap.min.css";
+import Home from "./components/Home";
+import login from './components/Home/login-redirect';
 
-import logo from './logo.svg';
+interface AppState {
+  recording: boolean
+}
 
-class App extends React.Component {
-  public render() {
+class App extends React.Component<{}, AppState> {
+
+  render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+      <div className="app">
+        <Switch>
+          <Route exact path="/" component={Home}/>
+          <Route path='/login' component={login} />
+          <Redirect to="/" />
+        </Switch>
       </div>
     );
   }
