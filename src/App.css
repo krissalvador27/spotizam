@@ -1,39 +1,45 @@
+body {
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#1e3364),
+    color-stop(85%, #03060b)
+  );
+  background-image: -webkit-linear-gradient(#1e3364, #03060b 85%);
+  background-image: -o-linear-gradient(#1e3364, #03060b 85%);
+  background-image: linear-gradient(#1e3364, #03060b 85%);
+}
+
 .app {
-  background-color: #222;
-  color: white;
   display: flex;
   justify-content: center;
   min-height: 100vh;
   height: 100%;
   width: 100vw;
   font-family: "Circular";
-}
-
-.app__logo {
-  transition: height 0.3s ease;
-  height: 240px;
-  cursor: pointer;
-}
-
-.app__logo:hover {
-  height: 255px;
-}
-
-.app__logo.recording {
-  height: 255px;
-  animation: logo-spin infinite 5s linear;
+  color: white;
 }
 
 h1 {
   color: white;
 }
 
-@keyframes logo-spin {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(-45deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(45deg); }
-  100% { transform: rotate(0deg); }
+.footer {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+  width: 100vw;
+  text-align: center;
+}
+
+.footer img {
+  height: 14px;
+  width: 14px;
+  margin-left: 6px;
+  cursor: pointer;
 }
 
 // Fonts
@@ -41,22 +47,22 @@ h1 {
   font-family: Circular;
   font-style: normal;
   font-weight: 400;
-  src: url('./fonts/circular-book.woff2') format('woff2'),
-       url('./fonts/circular-book.woff') format('woff');
+  src: url("./fonts/circular-book.woff2") format("woff2"),
+    url("./fonts/circular-book.woff") format("woff");
 }
 
 @font-face {
   font-family: Circular;
   font-style: normal;
   font-weight: 700;
-  src: url('./fonts/circular-bold.woff2') format('woff2'),
-       url('./fonts/circular-bold.woff') format('woff');
+  src: url("./fonts/circular-bold.woff2") format("woff2"),
+    url("./fonts/circular-bold.woff") format("woff");
 }
 
 @font-face {
   font-family: Circular;
   font-style: normal;
   font-weight: 900;
-  src: url('./fonts/circular-black.woff2') format('woff2'),
-       url('./fonts/circular-black.woff') format('woff');
+  src: url("./fonts/circular-black.woff2") format("woff2"),
+    url("./fonts/circular-black.woff") format("woff");
 }

@@ -1,140 +1,39 @@
-.table-container {
-	width: 100%;
-	margin-top: 48px;
+.songs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 56px;
+  margin-bottom: 48px;
+  justify-content: center;
 }
 
-.table-container .table-tracks thead tr th {
-	text-transform: uppercase;
-	letter-spacing: 0.16em;
-	color: #b3b3b3;
-	font-size: 14px;
-	border: none;
+.spotify-player-container {
+  position: relative;
+  margin: 16px;
 }
 
-.table-container .table-tracks thead tr .play {
-	text-align: center;
+.songs .spotify-player-overlay {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  bottom: 0;
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.25s ease-in-out, visibility 0.25s linear;
+  display: flex;
+  align-items: center;
 }
 
-.table-container .table-tracks .track-list-view {
-	font-size: 16px;
-	letter-spacing: 0.015em;
-	font-weight: 200;
-	height: 44px;
+.songs .spotify-player-container:hover .spotify-player-overlay,
+.songs .spotify-player-container:active .spotify-player-overlay {
+  visibility: visible;
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
-.table-container .table-tracks .track-list-view.active-row {
-	color: #1aa34a;
-	background-color: rgba(0, 0, 0, 0.3);
+.songs .spotify-player-overlay .lyric-match {
+  text-align: center;
+  padding: 18px;
 }
 
-.table-container .table-tracks .track-list-view td {
-	padding: 0px 8px;
-	padding-top: 4px;
-	position: relative;
-	line-height: 2.5;
-	border: none;
-}
-
-.table-container .table-tracks .track-list-view .lyric-match b {
-	background-color: #1db954;
-}
-
-.table-container .table-tracks .track-list-view .lyric-match {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 22vw;
-	max-width: 22vw;
-}
-
-.table-container .table-tracks .track-list-view .track-name {
-	width: 15vw;
-	max-width: 15vw;
-}
-
-.table-container .table-tracks .track-list-view .album-name {
-	width: 12vw;
-	max-width: 12vw;
-}
-
-.table-container .table-tracks .track-list-view .artist-name {
-	width: 12vw;
-	max-width: 12vw;
-}
-
-.table-container .table-tracks .track-list-view .track-name a {
-	color: white;
-}
-
-.table-container .table-tracks .track-list-view .track-name a:hover {
-	text-decoration: underline;
-}
-
-.table-container .table-tracks .track-list-view .album-name {
-	width: 15vw;
-	max-width: 15vw;
-}
-
-.table-container .table-tracks .track-list-view .wrap {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
-.table-container .table-tracks .track-list-view .play {
-	min-width: 35px;
-	width: 35px;
-}
-
-.table-container .table-tracks .track-list-view .album-art {
-	min-width: 50px;
-	width: 50px;
-}
-
-.table-container .table-tracks .track-list-view .play-pause {
-	padding: 4px 8px;
-	width: 50px;
-	min-width: 50px;
-}
-
-.table-container .table-tracks .track-list-view .play-pause.is-playing .play-pause-btn {
-	display: block;
-}
-
-.table-container .table-tracks .track-list-view .play-pause.is-playing .num {
-	display: none;
-}
-
-.table-container .table-tracks .track-list-view .play-pause .num {
-	opacity: 0.5;
-	text-align: center;
-}
-
-.table-container .table-tracks .track-list-view .play-pause .play-pause-btn {
-	display: none;
-}
-
-.table-container .table-tracks .track-list-view .play-pause .play-pause-btn .pause-btn,
-.table-container .table-tracks .track-list-view .play-pause .play-pause-btn .play-btn {
-	width: 34px;
-	transition: .2s ease;
-}
-
-.table-container .table-tracks .track-list-view .play-pause .play-pause-btn .pause-btn:hover,
-.table-container .table-tracks .track-list-view .play-pause .play-pause-btn .play-btn:hover {
-	cursor: pointer;
-	width: 36px;
-}
-
-.table-container .table-tracks .track-list-view:hover {
-	background-color: rgba(0, 0, 0, 0.3);
-}
-
-.table-container .table-tracks .track-list-view:hover .play-pause-btn {
-	display: block;
-	cursor: pointer;
-}
-
-.table-container .table-tracks .track-list-view:hover .num {
-	display: none;
+.songs .spotify-player-overlay .lyric-match b {
+  color: #1db954;
 }

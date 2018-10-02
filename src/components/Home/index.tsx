@@ -1,36 +1,36 @@
 import * as React from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import "./Home.css";
-import logo from "src/assets/spotify-logo.svg";
+import logo from "src/assets/spotify-logo-white.png";
 import Songlist from "src/components/Songlist";
 import { searchGoogle } from "src/lib/search";
 import { makeSong } from "src/models/song";
-import { getRecorder, requestSpeechToText} from "src/lib/audio";
+import { getRecorder, requestSpeechToText } from "src/lib/audio";
 import { setAccessToken, isAuthenticated } from "src/lib/auth";
 import Recorder from "recorderjs";
-
+import xButton from "src/assets/x-button.svg";
+import mic from "src/assets/microphone.svg";
 interface state {
-  recording: boolean,
-  lyrics: string,
-  songs: Array<any>,
-  pages: number,
-  totalPages: number,
-  error: string
+  recording: boolean;
+  lyrics: string;
+  songs: Array<any>;
+  pages: number;
+  totalPages: number;
+  error: string;
 }
 
 class Home extends React.Component<{}, state> {
   recorder: Recorder;
-  tempLyrics: string;
 
   state = {
     recording: false,
-    lyrics: "",
     songs: [],
+    lyrics: "",
     pages: 1,
     totalPages: 1,
     error: ""
   };
-  
+
   componentWillMount() {
     setAccessToken();
   }
@@ -39,17 +39,23 @@ class Home extends React.Component<{}, state> {
     this.recorder = await getRecorder();
   }
 
-  onClick = () => {
+  startRecording = () => {
     const recorder = this.recorder;
-  
+
     if (this.state.recording) {
       return;
     }
 
-    recorder.record();
-    this.setState({ recording: true });
+    if (!recorder) {
+      this.setState({
+        error: "Recording doesn't seem to work on your device 😭"
+      });
+    } else {
+      recorder.record();
+      this.setState({ recording: true });
 
-    setTimeout(this.getLyricMatch, 5000);
+      setTimeout(this.getLyricMatch, 5000);
+    }
   };
 
   getLyricMatch = () => {
@@ -61,16 +67,25 @@ class Home extends React.Component<{}, state> {
       // const audioUrl = URL.createObjectURL(audioBlob);
       // const audio = new Audio(audioUrl);
       // audio.play();
-      
-      requestSpeechToText(audioBlob).then((res) => {
-        // TODO error handling
-        const lyrics = res.DisplayText.replace(".", "");
 
-        if (lyrics && lyrics.split(" ").length < 3) {
-          this.setState({ lyrics: "", error: "I couldn't quite get that. Try again with more lyrics!" });
+      requestSpeechToText(audioBlob).then(res => {
+        this.setState({ recording: false });
+        const lyrics = res.DisplayText ? res.DisplayText.replace(".", "") : "";
+
+        if (lyrics === "") {
+          this.setState({
+            songs: [],
+            lyrics: "",
+            error: "Oops! I couldn't quite get that. Can you sing it again? 😅"
+          });
+        } else if (lyrics.split(" ").length < 3) {
+          this.setState({
+            songs: [],
+            error:
+              "Hmm.. Can you give me a little more lyrics? 3 word minimum pls 😇"
+          });
         } else {
-          this.tempLyrics = "";
-          this.setState({ lyrics });
+          this.setState({ lyrics: lyrics });
           searchGoogle(lyrics).then(res => {
             const songs = res.items.map(song => {
               return makeSong(song);
@@ -83,52 +98,91 @@ class Home extends React.Component<{}, state> {
 
       this.recorder.clear();
     }, "audio/wav");
-
-    this.setState({ recording: false });
   };
 
-  updateInputValue = (evt) => {
-    this.tempLyrics = evt.target.value;
-  };
-
-  onSubmit = () => {
-    this.setState({ lyrics: this.tempLyrics });
-
-    searchGoogle(this.tempLyrics).then(res => {
-      const songs = res.items.map(song => {
-        return makeSong(song);
-      });
-      this.tempLyrics = "";
-      this.setState({ songs, error: "" });
+  updateInputValue = evt => {
+    this.setState({
+      lyrics: evt.target.value
     });
+  };
+
+  onSubmit = e => {
+    const { lyrics } = this.state;
+
+    if (lyrics.split(" ").length < 3) {
+      this.setState({
+        songs: [],
+        error:
+          "Hmm.. Can you give me a little more lyrics? 3 word minimum pls 😇"
+      });
+    } else {
+      searchGoogle(lyrics).then(res => {
+        const songs = res.items.map(song => {
+          return makeSong(song);
+        });
+
+        this.setState({ songs, error: "" });
+      });
+    }
+
+    e.preventDefault();
   };
 
   render() {
     const authenticated = isAuthenticated();
-    const { songs, error, lyrics } = this.state;
-    
+    const { songs, error } = this.state;
+
     return (
-      <div>
-       {
-         authenticated ? 
-          <>
-            <div className="home">
-              <img onClick={this.onClick} src={logo} className={`app__logo ${this.state.recording ? "recording" : ""}`} alt="logo" /> 
-              <form onSubmit={this.onSubmit} >
-                <input placeholder="Type or sing the lyrics to search" className="home__input" type="text" value={lyrics || this.tempLyrics} onChange={evt => this.updateInputValue(evt)} />
-              </form>
+      <>
+        {authenticated ? (
+          <div className="home">
+            <div
+              className={`logo-container ${
+                this.state.recording ? "recording" : ""
+              }`}
+            >
+              <img
+                onClick={this.startRecording}
+                src={logo}
+                className={`logo ${this.state.recording ? "recording" : ""}`}
+                alt="logo"
+              />
             </div>
-            {
-            songs.length ? 
-              <Songlist songs={songs.slice(0, 10)} />
-              :
-              <h3>{error}</h3>
-            }
-          </>
-          :
-          <Redirect to={{pathname: "/login"}} />
-       }  
-      </div>
+            <form onSubmit={this.onSubmit}>
+              <input
+                placeholder="Type or sing to search by lyrics"
+                className="home__input"
+                type="text"
+                value={this.state.lyrics}
+                onChange={evt => this.updateInputValue(evt)}
+                autoFocus={true}
+              />
+              {this.state.lyrics ? (
+                <img
+                  onClick={() => {
+                    this.setState({ lyrics: "" });
+                  }}
+                  className="x-button"
+                  src={xButton}
+                />
+              ) : (
+                <img
+                  className="mic-button"
+                  src={mic}
+                  onClick={this.startRecording}
+                />
+              )}
+            </form>
+            {songs.length ? (
+              <Songlist songs={songs} />
+            ) : (
+              <h3 className="error">{error}</h3>
+            )}
+          </div>
+        ) : (
+          <Redirect to={{ pathname: "/login" }} />
+        )}
+      </>
     );
   }
 }
