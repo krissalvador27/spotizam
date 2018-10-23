@@ -49,54 +49,58 @@ class Songlist extends React.Component<songlistProps, state> {
     const promises = _.uniqBy(this.props.songs, song => {
       // uniq by query
       return song.title + " " + song.artist;
-    }).map(song => {
-      return new Promise(resolve => {
-        spotifyApi.searchTracks(
-          song.title + " " + song.artist,
-          { limit: 1 },
-          (err, result) => {
-            if (err) {
-              if (err.status === 401) {
-                getAuthenticated();
+    })
+      .filter(song => {
+        return song.title !== "undefined";
+      })
+      .map(song => {
+        return new Promise(resolve => {
+          spotifyApi.searchTracks(
+            song.title + " " + song.artist,
+            { limit: 1 },
+            (err, result) => {
+              if (err) {
+                if (err.status === 401) {
+                  getAuthenticated();
+                }
+
+                resolve({ err });
+                return;
               }
 
-              resolve({ err });
-              return;
-            }
+              if (result.tracks.items[0]) {
+                resolve(
+                  Object.assign({}, result.tracks.items[0], {
+                    lyricMatch: song.lyricMatch
+                  })
+                );
+              } else {
+                // Try search with just the song title
+                spotifyApi.searchTracks(
+                  song.title,
+                  { limit: 1 },
+                  (err, result) => {
+                    if (err) {
+                      if (err.status === 401) {
+                        getAuthenticated();
+                      }
 
-            if (result.tracks.items[0]) {
-              resolve(
-                Object.assign({}, result.tracks.items[0], {
-                  lyricMatch: song.lyricMatch
-                })
-              );
-            } else {
-              // Try search with just the song title
-              spotifyApi.searchTracks(
-                song.title,
-                { limit: 1 },
-                (err, result) => {
-                  if (err) {
-                    if (err.status === 401) {
-                      getAuthenticated();
+                      resolve({ err });
+                      return;
                     }
 
-                    resolve({ err });
-                    return;
+                    resolve(
+                      Object.assign({}, result.tracks.items[0], {
+                        lyricMatch: song.lyricMatch
+                      })
+                    );
                   }
-
-                  resolve(
-                    Object.assign({}, result.tracks.items[0], {
-                      lyricMatch: song.lyricMatch
-                    })
-                  );
-                }
-              );
+                );
+              }
             }
-          }
-        );
+          );
+        });
       });
-    });
 
     const spotifySongs = await Promise.all(promises);
     this.setState({

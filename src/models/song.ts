@@ -15,6 +15,8 @@ export function makeSong(searchResult: any): Song {
   try {
     if (searchTitle.indexOf("|") > -1) {
       [artist, title] = searchTitle.split("|")[0].split("–");
+    } else if (searchTitle.indexOf("by") > -1) {
+      [title, artist] = searchTitle.split("by")[0].split("–");
     } else {
       [artist, title] = searchTitle.split("...")[0].split("–");
     }
@@ -22,7 +24,10 @@ export function makeSong(searchResult: any): Song {
     artist = artist.replace(" and ", " ");
     artist = artist.replace(" & ", " ");
     title = title.trim();
-    title = title.substring(0, title.trim().lastIndexOf(" "));
+
+    if (title.indexOf(" Lyrics")) {
+      title = title.substring(0, title.trim().lastIndexOf(" "));
+    }
   } catch (err) {
     console.warn("Invalid search result", searchResult.title);
   }
