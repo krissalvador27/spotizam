@@ -5,6 +5,7 @@ Wish you could find out what that song is and play it on Spotify? (Would love th
 
 Now with Spotizam you can search spotify's music library with lyrics!
 
+LIVE DEMO: https://krissalvador27-spotizam.glitch.me/
 ### Preface
 
 Hacked up this app to experiment with a bunch of cool APIs and get my feet wet with [Typescript](https://www.typescriptlang.org/). Emphasis on _hack_ project, especially with how I used TS.
@@ -35,4 +36,11 @@ REACT_APP_SPOTIFY_CLIENT_SECRET=<Spotify provided client secret>
 REACT_APP_GOOGLE_API_KEY=<Google provided developer api key>
 REACT_APP_GOOGLE_CX_ID=<Google provided custom search engine id>
 REACT_APP_MICROSOFT_KEY=<Microsoft provided azure key>
+```
+
+Then start app with either npm or yarn 
+
+```
+npm run start 
+yarn start
 ```
