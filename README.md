@@ -5,7 +5,7 @@ Wish you could find out what that song is and play it on Spotify? (Would love th
 
 Now with Spotizam you can search spotify's music library with lyrics!
 
-LIVE DEMO: https://krissalvador27-spotizam.glitch.me/
+LIVE DEMO: https://spotizam.glitch.me/
 ### Preface
 
 Hacked up this app to experiment with a bunch of cool APIs and get my feet wet with [Typescript](https://www.typescriptlang.org/). Emphasis on _hack_ project, especially with how I used TS.
