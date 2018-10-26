@@ -1,0 +1,11 @@
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: yarn serve-dev REACT_APP_FOOD="Pineapple"
+  web1:
+    command:
+      - yarn serve-dev REACT_APP_FOOD="Bacon"
+    image: web
+release:
+  image: web
