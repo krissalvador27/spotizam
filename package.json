@@ -57,7 +57,14 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "serve": "NODE_ENV=development node server.js"
+    "serve-dev": "NODE_ENV=development node server.js",
+    "do-the-docker": "npm run docker-build-app && npm run docker-build-nginx && npm run docker-run-nginx && npm run docker-run-bacon && npm run docker-run-mangoes && echo \"SUCCESS 🎉 . Open your browser to localhost:3000 and hard refresh to view your different spotizam instances!\"",
+    "docker-build-app": "docker build -t spotizam-app .",
+    "docker-build-nginx": "cd ./nginx-docker && docker build -t nginx-load-balancer .",
+    "docker-run-nginx": "docker run -p 3000:80 --name SPOTIZAM_NGINX -d nginx-load-balancer ",
+    "docker-run-bacon": "docker run -e \"REACT_APP_FOOD=Bacon\" -p 8081:8080  --name SPOTIZAM_BACON -d spotizam-app",
+    "docker-run-mangoes": "docker run -e \"REACT_APP_FOOD=Pineapples\" -p 8082:8080 --name SPOTIZAM_PINEAPPLES -d spotizam-app",
+    "docker-clean": "docker rm -f SPOTIZAM_PINEAPPLES SPOTIZAM_BACON SPOTIZAM_NGINX"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
