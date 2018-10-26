@@ -31,6 +31,9 @@ class App extends React.Component<{}, AppState> {
           <a href="https://github.com/krissalvador27/spotizam">
             <img src={heart} />
           </a>
+          &nbsp;
+          {/* This is the fun load balancing part! */}
+          {process.env.REACT_APP_FOOD ? `& ${process.env.REACT_APP_FOOD}` : ""}
         </div>
       </>
     );
