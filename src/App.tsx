@@ -31,6 +31,9 @@ class App extends React.Component<{}, AppState> {
           <a href="https://github.com/krissalvador27/spotizam">
             <img src={heart} />
           </a>
+          {process.env.REACT_APP_FOOD
+            ? ` & ${process.env.REACT_APP_FOOD}`
+            : " "}
         </div>
       </>
     );
